@@ -11,6 +11,7 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 . "$SCRIPT_DIR/_common.sh"
 
 function main {
+  echo "RUNNING TF_DOCS!!!"
   common::initialize "$SCRIPT_DIR"
   common::parse_cmdline "$@"
   common::parse_and_export_env_vars
@@ -133,9 +134,6 @@ function terraform_docs {
         ;;
       --create-file-if-not-exist)
         create_if_not_exist=$value
-        ;;
-      --config)
-        tf_docs_formatter=""
         ;;
     esac
   done
