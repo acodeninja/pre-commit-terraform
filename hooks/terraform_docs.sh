@@ -137,9 +137,8 @@ function terraform_docs {
   done
 
   #
-  # Decide formatter to use
+  # Override formatter if no config file set
   #
-
   [[ "$args" != *"--config"* ]] && local tf_docs_formatter="md"
 
   local dir_path
