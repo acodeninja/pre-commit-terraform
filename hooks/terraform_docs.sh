@@ -87,6 +87,7 @@ function terraform_docs_ {
 #   files (array) filenames to check
 #######################################################################
 function terraform_docs {
+  echo "RUNNING!"
   local -r terraform_docs_awk_file="$1"
   local -r hook_config="$2"
   local -r args="$3"
@@ -113,6 +114,7 @@ function terraform_docs {
   local text_file="README.md"
   local add_to_existing=false
   local create_if_not_exist=false
+  local tf_docs_formatter="md"
 
   read -r -a configs <<< "$hook_config"
 
@@ -131,6 +133,9 @@ function terraform_docs {
         ;;
       --create-file-if-not-exist)
         create_if_not_exist=$value
+        ;;
+      --config)
+        tf_docs_formatter=""
         ;;
     esac
   done
@@ -180,8 +185,9 @@ function terraform_docs {
     fi
 
     if [[ "$terraform_docs_awk_file" == "0" ]]; then
+      echo "RUNNING: terraform-docs $tf_docs_formatter $args ./ > \"$tmp_file\""
       # shellcheck disable=SC2086
-      terraform-docs md $args ./ > "$tmp_file"
+      terraform-docs $tf_docs_formatter $args ./ > "$tmp_file"
     else
       # Can't append extension for mktemp, so renaming instead
       local tmp_file_docs
@@ -191,8 +197,10 @@ function terraform_docs {
       tmp_file_docs_tf="$tmp_file_docs.tf"
 
       awk -f "$terraform_docs_awk_file" ./*.tf > "$tmp_file_docs_tf"
+
+      echo "RUNNING: terraform-docs $tf_docs_formatter $args \"$tmp_file_docs_tf\" > \"$tmp_file\""
       # shellcheck disable=SC2086
-      terraform-docs md $args "$tmp_file_docs_tf" > "$tmp_file"
+      terraform-docs $tf_docs_formatter $args "$tmp_file_docs_tf" > "$tmp_file"
       rm -f "$tmp_file_docs_tf"
     fi
 
