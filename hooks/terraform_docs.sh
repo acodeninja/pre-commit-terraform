@@ -115,7 +115,7 @@ function terraform_docs {
   local create_if_not_exist=false
 
   read -r -a configs <<< "$hook_config"
-
+  echo "${configs[@]}" >> ./out.log
   for c in "${configs[@]}"; do
 
     IFS="=" read -r -a config <<< "$c"
