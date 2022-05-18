@@ -117,6 +117,8 @@ function terraform_docs {
   local create_if_not_exist=false
   local tf_docs_formatter="md"
 
+  echo "ARGS! $args"
+
   read -r -a configs <<< "$hook_config"
 
   for c in "${configs[@]}"; do
