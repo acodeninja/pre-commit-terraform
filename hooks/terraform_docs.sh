@@ -115,9 +115,6 @@ function terraform_docs {
   local text_file="README.md"
   local add_to_existing=false
   local create_if_not_exist=false
-  local tf_docs_formatter="md"
-
-  echo "ARGS! $args"
 
   read -r -a configs <<< "$hook_config"
 
@@ -139,6 +136,15 @@ function terraform_docs {
         ;;
     esac
   done
+
+  #
+  # Decide formatter to use
+  #
+  local tf_docs_formatter="md"
+  if [[ "$args" == *"--config"* ]]; then
+    # Allow config file to specify formatter
+    tf_docs_formatter=""
+  fi
 
   local dir_path
   for dir_path in $(echo "${paths[*]}" | tr ' ' '\n' | sort -u); do
