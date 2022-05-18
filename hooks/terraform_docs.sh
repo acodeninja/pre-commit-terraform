@@ -11,7 +11,6 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 . "$SCRIPT_DIR/_common.sh"
 
 function main {
-  echo "RUNNING TF_DOCS!!!" >> ./out.log
   common::initialize "$SCRIPT_DIR"
   common::parse_cmdline "$@"
   common::parse_and_export_env_vars
@@ -88,7 +87,6 @@ function terraform_docs_ {
 #   files (array) filenames to check
 #######################################################################
 function terraform_docs {
-  echo "RUNNING!"
   local -r terraform_docs_awk_file="$1"
   local -r hook_config="$2"
   local -r args="$3"
@@ -191,7 +189,6 @@ function terraform_docs {
     fi
 
     if [[ "$terraform_docs_awk_file" == "0" ]]; then
-      echo "RUNNING: terraform-docs $tf_docs_formatter $args ./ > \"$tmp_file\""
       # shellcheck disable=SC2086
       terraform-docs $tf_docs_formatter $args ./ > "$tmp_file"
     else
@@ -204,7 +201,6 @@ function terraform_docs {
 
       awk -f "$terraform_docs_awk_file" ./*.tf > "$tmp_file_docs_tf"
 
-      echo "RUNNING: terraform-docs $tf_docs_formatter $args \"$tmp_file_docs_tf\" > \"$tmp_file\""
       # shellcheck disable=SC2086
       terraform-docs $tf_docs_formatter $args "$tmp_file_docs_tf" > "$tmp_file"
       rm -f "$tmp_file_docs_tf"
@@ -217,8 +213,6 @@ function terraform_docs {
     perl -i -e 'open(F, "'"$tmp_file"'"); $f = join "", <F>; while(<>){if (/I_WANT_TO_BE_REPLACED/) {print $f} else {print $_};}' "$text_file"
 
     rm -f "$tmp_file"
-
-    exit 1
 
     popd > /dev/null
   done
