@@ -33,6 +33,7 @@ function main {
 #######################################################################
 function terraform_docs_ {
   echo "ERROR: BOOM!"
+  exit 1
   local -r hook_config="$1"
   local -r args="$2"
   shift 2
