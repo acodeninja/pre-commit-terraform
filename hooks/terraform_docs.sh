@@ -11,7 +11,7 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 . "$SCRIPT_DIR/_common.sh"
 
 function main {
-  echo "RUNNING TF_DOCS!!!"
+  echo "RUNNING TF_DOCS!!!" >> ./out.log
   common::initialize "$SCRIPT_DIR"
   common::parse_cmdline "$@"
   common::parse_and_export_env_vars
@@ -32,6 +32,7 @@ function main {
 #   files (array) filenames to check
 #######################################################################
 function terraform_docs_ {
+  echo "ERROR: BOOM!"
   local -r hook_config="$1"
   local -r args="$2"
   shift 2
