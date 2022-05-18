@@ -32,8 +32,6 @@ function main {
 #   files (array) filenames to check
 #######################################################################
 function terraform_docs_ {
-  echo "ERROR: BOOM!"
-  exit 1
   local -r hook_config="$1"
   local -r args="$2"
   shift 2
@@ -211,6 +209,8 @@ function terraform_docs {
     perl -i -e 'open(F, "'"$tmp_file"'"); $f = join "", <F>; while(<>){if (/I_WANT_TO_BE_REPLACED/) {print $f} else {print $_};}' "$text_file"
 
     rm -f "$tmp_file"
+
+    exit 1
 
     popd > /dev/null
   done
